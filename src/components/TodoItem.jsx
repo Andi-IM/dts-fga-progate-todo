@@ -1,28 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
+import { TodoContext } from "../App";
 
-const TodoItem = ({ todo, toggleCompleted, deleteTodo }) => {
-  const getTodoTitleStyle = () => {
-    if (todo.completed === true) {
+class TodoItem extends React.Component {
+  static contextType = TodoContext;
+
+  getTodoTitleStyle = () => {
+    if (this.props.todo.completed === true) {
       return { textDecoration: "line-through" };
     } else {
       return { textDecoration: "none" };
     }
   };
 
-  return (
-    <div style={styles.todoItem}>
-      <input
-        type="checkbox"
-        style={styles.checkBox}
-        onChange={() => toggleCompleted(todo.id)}
-      />
-      <p style={getTodoTitleStyle()}>{todo.title}</p>
-      <button style={styles.button} onClick={() => deleteTodo(todo.id)}>
-        x
-      </button>
-    </div>
-  );
-};
+  render() {
+    const {toggleCompleted, deleteTodo} = this.context;
+    return (
+      <div style={styles.todoItem}>
+        <input
+          type="checkbox"
+          style={styles.checkBox}
+          onChange={() => toggleCompleted(this.props.todo.id)}
+        />
+        <p style={this.getTodoTitleStyle()}>{this.props.todo.title}</p>
+        <button style={styles.button} onClick={() => deleteTodo(this.props.todo.id)}>
+          x
+        </button>
+      </div>
+    );
+  }
+}
 
 const styles = {
   todoItem: {

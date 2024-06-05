@@ -1,39 +1,40 @@
 import React, { useState } from "react";
 
-const TodoForm = ({ addTodo }) => {
-  const [title, setTitle] = useState("");
+class TodoForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: ""
+    };
+  }
 
-  const handleSubmit = (event) => {
+  handleSubmit = (event) => {
     event.preventDefault();
-    addTodo(title);
+    this.props.addTodo(this.state.title);
+    this.setState({ title: "" });
   };
 
-  const handleChangeTitle = (event) => {
-    setTitle(event.target.value);
+  handleChangeTitle = (event) => {
+    this.setState({ title: event.target.value });
   };
 
-  return (
-    <div style={styles.container}>
-      <form
-        onSubmit={(event) => {
-          handleSubmit(event);
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Add your Todo"
-          style={styles.formInput}
-          onChange={(event) => {
-            handleChangeTitle(event);
-          }}
-          value={title}
-        />
-
-        <button style={styles.button}>Add Todo</button>
-      </form>
-    </div>
-  );
-};
+  render() {
+    return (
+      <div style={styles.container}>
+        <form onSubmit={this.handleSubmit}>
+          <input
+            type="text"
+            placeholder="Add your Todo"
+            style={styles.formInput}
+            onChange={this.handleChangeTitle}
+            value={this.state.title}
+          />
+          <button style={styles.button}>Add Todo</button>
+        </form>
+      </div>
+    );
+  }
+}
 
 const styles = {
   container: {
